@@ -1,0 +1,23 @@
+#game-container {
+    display: flex;
+    justify-content: space-around; 
+}
+
+.word-group {
+    display: grid; /* Arrange tiles in a grid */
+    grid-template-columns: repeat(auto-fit, 100px); /* Adjust tile size */
+    grid-template-rows: repeat(auto-fit, 100px); 
+    gap: 10px; 
+}
+
+.tile {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; 
+}
+/* Add styles here */
