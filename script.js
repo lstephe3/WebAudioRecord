@@ -1,9 +1,6 @@
-
 const setupDiv = document.getElementById('setup');
 const recordingDiv = document.getElementById('recording');
 const gameContainerDiv = document.getElementById('game-container');
-const numRootWordsInput = document.getElementById('numRootWords');
-const numAffixWordsInput = document.getElementById('numAffixWords');
 const startRecordingButton = document.getElementById('startRecording');
 const recordingInstructions = document.getElementById('recordingInstructions');
 const recordButton = document.getElementById('recordButton');
@@ -36,18 +33,18 @@ function startRecording() {
 
                 currentWordIndex++;
 
-                if (currentWordType === 'root' && currentWordIndex < numRootWordsInput.value) {
+                if (currentWordType === 'root' && currentWordIndex < gridSize.value) {
                     recordingInstructions.textContent = `Record root word ${currentWordIndex + 1}`;
                 } else if (currentWordType === 'root') {
                     currentWordType = 'affix';
                     currentWordIndex = 0;
                     recordingInstructions.textContent = `Record affix word ${currentWordIndex + 1}`;
-                } else if (currentWordType === 'affix' && currentWordIndex < numAffixWordsInput.value) {
+                } else if (currentWordType === 'affix' && currentWordIndex < gridSize.value) {
                     recordingInstructions.textContent = `Record affix word ${currentWordIndex + 1}`;
                 } else {
                     // Recording is complete, proceed to game setup
                     recordingDiv.style.display = 'none';
-                    gameContainerDiv.style.display = 'block';
+                    gameContainerDiv.style.display = 'flex';
                     createTiles(); // (Implementation from previous response)
                 }
 
@@ -68,6 +65,7 @@ startRecordingButton.addEventListener('click', () => {
     setupDiv.style.display = 'none';
     recordingDiv.style.display = 'block';
     recordingInstructions.textContent = `Record root word ${currentWordIndex + 1}`;
+    const gridSize = document.getElementById('gridSize').value; 
     
     // Start recording the first root word
     startRecording();
@@ -86,29 +84,34 @@ stopButton.addEventListener('click', () => {
 function createTiles() {
     const rootWordsContainer = document.getElementById('root-words');
     const affixWordsContainer = document.getElementById('affix-words');
+    const gridSize = document.getElementById('gridSize').value;
+    const numRowsCols = Math.sqrt(gridSize); // Calculate number of rows/columns
+    
 
     // Create root word tiles
-    for (let i = 0; i < numRootWordsInput.value; i++) {
+    for (let i = 0; i < gridSize; i++) { // Assuming equal root and affix words
         const tile = document.createElement('div');
         tile.classList.add('tile');
         tile.dataset.word = `root-${i}`;
-      
+        tile.dataset.audioBlob = URL.createObjectURL(audioBlobs[`root-${i}`]); 
+
         // Add image for root word
         const img = document.createElement('img');
-        img.src = 'images/rootword.png'; 
-        img.alt = 'Root Word'; 
+        img.src = 'images/rootword.png';
+        img.alt = 'Root Word';
         tile.appendChild(img);
 
         tile.addEventListener('click', () => handleTileClick(tile));
         rootWordsContainer.appendChild(tile);
     }
 
-    // Create affix word tiles (similar to root words)
-    for (let i = 0; i < numAffixWordsInput.value; i++) {
+    // Create affix word tiles
+    for (let i = 0; i < gridSize; i++) { // Assuming equal root and affix words
         const tile = document.createElement('div');
         tile.classList.add('tile');
         tile.dataset.word = `affix-${i}`;
-    
+        tile.dataset.audioBlob = URL.createObjectURL(audioBlobs[`affix-${i}`]);
+
         // Add image for affix word
         const img = document.createElement('img');
         img.src = 'images/affixword.png';
@@ -118,7 +121,14 @@ function createTiles() {
         tile.addEventListener('click', () => handleTileClick(tile));
         affixWordsContainer.appendChild(tile);
     }
+
+    // Apply CSS Grid properties for layout
+    rootWordsContainer.style.gridTemplateColumns = `repeat(${numRowsCols}, 1fr)`;
+    rootWordsContainer.style.gridTemplateRows = `repeat(${numRowsCols}, 1fr)`;
+    affixWordsContainer.style.gridTemplateColumns = `repeat(${numRowsCols}, 1fr)`;
+    affixWordsContainer.style.gridTemplateRows = `repeat(${numRowsCols}, 1fr)`;
 }
+
 
 
 // Function to handle tile clicks (from previous responses)
