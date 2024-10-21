@@ -7,9 +7,9 @@
 <body>
     <div id="setup">
         <label for="numRootWords">Number of root words:</label>
-        <input type="number" id="numRootWords" min="1" value="3">
+        <input type="number" id="numRootWords" min="1" value="6">
         <label for="numAffixWords">Number of affix words:</label>
-        <input type="number" id="numAffixWords" min="1" value="3">
+        <input type="number" id="numAffixWords" min="1" value="6">
         <button id="startRecording">Start Recording</button>
     </div>
 
@@ -18,11 +18,13 @@
         <button id="recordButton">Record</button>
         <button id="stopButton">Stop</button>
     </div>
-
-    <div id="game-container" style="display: none;">
-        <div id="root-words" class="word-group"></div>
-        <div id="affix-words" class="word-group"></div>
+    <div class="gamebody">
+        <div id="game-container">
+            <div id="root-words" class="word-group"></div>
+            <div id="affix-words" class="word-group"></div>
+        </div>
     </div>
+    
 
     <script src="script.js"></script>
 </body>
